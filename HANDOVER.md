@@ -127,7 +127,7 @@ git push origin v0.1.0
 ```
 
 **Naming on GitHub:** the `pyproject.toml` URL assumes
-`github.com/bastiengallay/inflecv`. Adjust if the org differs.
+`github.com/bastien-gallay/inflecv`.
 
 ## Roadmap (post v0.1)
 
@@ -181,8 +181,8 @@ ADR-style synthesis.
    granular.
 3. **`STATUS.md` posture for v0.1**: ship as `active` or `slow`? Solo
    maintainer + side-project nature suggests `slow`.
-4. **GitHub org name**: `bastiengallay` (personal) or a dedicated org
-   (`inflecv-tools` etc.)? `pyproject.toml` assumes personal.
+4. ~~**GitHub org name**~~ Resolved 2026-05-16: published under
+   `bastien-gallay/inflecv` (personal account).
 5. **Pexels photo licensing**: if used, attribution where? Decided
    against in the first pass — SVG silhouette ships instead.
 

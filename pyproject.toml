@@ -23,8 +23,8 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/bastiengallay/inflecv"
-Issues    = "https://github.com/bastiengallay/inflecv/issues"
+Repository = "https://github.com/bastien-gallay/inflecv"
+Issues    = "https://github.com/bastien-gallay/inflecv/issues"
 
 [project.optional-dependencies]
 dev = [
