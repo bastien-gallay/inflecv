@@ -1,0 +1,84 @@
+# CI minimal — P0
+#
+# Goals:
+#  - Block PRs that break the install (the most user-facing failure).
+#  - Block PRs that don't follow Tidy First (commit shapes).
+#  - Run the existing pytest suites.
+#
+# P1 (next): add markdownlint + ruff + Typst build.
+# P2: matrix on Python versions, OS, agent runtimes; mutation testing.
+
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  install-and-test:
+    name: install + test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Install Typst
+        run: |
+          curl -fsSL https://github.com/typst/typst/releases/latest/download/typst-x86_64-unknown-linux-musl.tar.xz \
+            | tar -xJ
+          sudo mv typst-x86_64-unknown-linux-musl/typst /usr/local/bin/
+          typst --version
+
+      - name: Install just
+        uses: extractions/setup-just@v2
+
+      - name: Sync Python deps
+        run: uv sync
+
+      - name: Smoke test — installer in --check mode
+        run: ./scripts/install.sh --check
+
+      - name: Run tests
+        run: uv run pytest -q
+
+  tidy-first-check:
+    name: tidy-first commit shape
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reject mixed tidy+behaviour in one commit
+        # Convention: a commit subject prefixed `refactor:` or `tidy:`
+        # MUST NOT also touch behaviour markers (test expectations,
+        # public function signatures). This is a coarse check; reviewers
+        # remain authoritative.
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+          violations=0
+          for sha in $(git rev-list "$base..$head"); do
+            subject=$(git log -1 --format=%s "$sha")
+            if echo "$subject" | grep -qE '^(refactor|tidy)(\(|:)'; then
+              # tidy commit: check it doesn't touch test assertions or signatures
+              if git show --stat "$sha" -- 'scripts/**/*.py' 'tests/**/*.py' \
+                 | grep -qE '^\+.*assert|^\+def [a-z_]+\('; then
+                echo "::warning::commit $sha labelled tidy but adds asserts or function definitions"
+                violations=$((violations+1))
+              fi
+            fi
+          done
+          [ "$violations" -eq 0 ] || {
+            echo "::error::$violations potentially mixed tidy/behaviour commits — split per CODING_STANDARDS.md"
+            exit 1
+          }

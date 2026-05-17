@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Placeholder profile silhouette for John Doe sample. -->
+  <!-- Replace src/assets/placeholder-photo.{svg,png,jpg} with your own. -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#dfe7ee"/>
+      <stop offset="100%" stop-color="#b9c5d1"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="100" fill="url(#bg)"/>
+  <circle cx="100" cy="80" r="34" fill="#7c8a99"/>
+  <path d="M40,200 C40,150 70,128 100,128 C130,128 160,150 160,200 Z" fill="#7c8a99"/>
+</svg>

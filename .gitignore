@@ -1,0 +1,45 @@
+# Build outputs
+dist/
+*.pdf
+!docs/**/*.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# uv
+# (keep uv.lock tracked)
+
+# Personal data — NEVER commit these
+.personal/
+data/applications/*
+!data/applications/john-doe-example/
+!data/applications/.gitkeep
+
+# Per-instance overrides
+.inflecv.md
+local.config.yml
+
+# Caches and temporary
+*.tmp
+*.bak
+.cache/
+
+# Agent runtime local settings
+.claude/settings.local.json
+.cursor/
