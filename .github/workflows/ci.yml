@@ -39,7 +39,7 @@ jobs:
         uses: extractions/setup-just@v2
 
       - name: Sync Python deps
-        run: uv sync
+        run: uv sync --extra dev
 
       - name: Smoke test — installer in --check mode
         run: ./scripts/install.sh --check
