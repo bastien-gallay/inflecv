@@ -96,20 +96,23 @@ install_python_deps() {
     warn "no pyproject.toml in $(pwd); skipping python deps"
     return
   fi
-  $CHECK_ONLY && { log "python deps: would run 'uv sync'"; return; }
+  $CHECK_ONLY && { log "python deps: would run 'uv sync --extra dev'"; return; }
   log "syncing python deps with uv…"
-  uv sync
+  uv sync --extra dev
 }
 
 # ---- Step 5: Typst fonts ----
 install_fonts() {
-  # Fonts required by neat-cv template
-  # See src/manifest.yml for the canonical list
-  local fonts_needed=("Inter" "Font Awesome 6 Free" "Font Awesome 6 Brands")
+  # Fonts required by neat-cv template. Patterns are version-tolerant:
+  # Homebrew's font-fontawesome cask currently ships FA7; Typst's
+  # @preview/fontawesome:0.6.0 works against either FA6 or FA7.
+  local fonts_needed=("Inter" "Font Awesome [0-9]+ Free" "Font Awesome [0-9]+ Brands")
   log "checking Typst fonts…"
   local missing=()
+  local installed
+  installed=$(typst fonts 2>/dev/null || true)
   for f in "${fonts_needed[@]}"; do
-    if ! typst fonts 2>/dev/null | grep -qFi "$f"; then
+    if ! printf '%s\n' "$installed" | grep -qEi "$f"; then
       missing+=("$f")
     fi
   done
@@ -121,7 +124,22 @@ install_fonts() {
   $CHECK_ONLY && return
   case "$PLATFORM" in
     macos)
-      have brew && brew install --cask font-inter font-fontawesome
+      # Install each cask independently; tolerate "already installed" collisions
+      # (brew aborts when a font file already exists in ~/Library/Fonts).
+      if have brew; then
+        for cask in font-inter font-fontawesome; do
+          brew install --cask "$cask" 2>&1 | tee /tmp/inflecv-brew-$$.log || {
+            if grep -q "already a Font at" /tmp/inflecv-brew-$$.log; then
+              warn "$cask: font files already present, skipping"
+            else
+              warn "$cask: install failed (see /tmp/inflecv-brew-$$.log)"
+            fi
+          }
+          rm -f /tmp/inflecv-brew-$$.log
+        done
+      else
+        warn "brew not found; install fonts manually: ${missing[*]}"
+      fi
       ;;
     linux)
       warn "install fonts manually: ${missing[*]}"
