@@ -66,6 +66,23 @@ open dist/cv.pdf
 To use your own CV, fork or template this repo, replace
 `src/cv-data.typ` with your data, drop your photo into `src/assets/`.
 
+### Bring your own CV (brownfield / greenfield)
+
+If you already have a personal CV repo and want to adopt inflecv as
+upstream, see [`docs/brownfield-install.md`](docs/brownfield-install.md).
+It inventories the conflicts an existing instance faces, defines four
+resolution categories (diverging files, private payload, deferred
+upstream, upstream-only), and gives concrete steps to:
+
+- add inflecv as the `upstream` remote on your repo,
+- override `.gitignore` to un-ignore your private payload
+  (`.personal/`, `data/applications/`) on private forks,
+- sync from upstream over time (`git fetch upstream && git merge
+  upstream/main`).
+
+A fresh fork (greenfield) follows a shorter shape covered in the same
+document.
+
 ## Architecture
 
 ```text
