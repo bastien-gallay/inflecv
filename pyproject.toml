@@ -38,6 +38,8 @@ dev = [
 testpaths = [
     "scripts/tests",
     "scripts/verification/tests",
+    "scripts/job_analyze/tests",
+    "scripts/job_fit/tests",
 ]
 pythonpath = ["."]
 
