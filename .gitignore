@@ -25,11 +25,24 @@ htmlcov/
 # uv
 # (keep uv.lock tracked)
 
-# Personal data — NEVER commit these
+# Personal data — NEVER commit these in the public toolkit.
+# A private instance overrides this block (see docs/brownfield-install.md).
 .personal/
 data/applications/*
 !data/applications/john-doe-example/
 !data/applications/.gitkeep
+
+# Instance-only private payload — never present upstream, ignored
+# defensively so a local clone carrying private content does not leak it.
+profile/
+resources/profile/
+brainstorm/
+posts/
+docs/prospectives/
+# Instance photo/diploma assets (the placeholder SVG stays tracked)
+src/assets/*.jpg
+src/assets/*.jpeg
+src/assets/*.png
 
 # Per-instance overrides
 .inflecv.md
