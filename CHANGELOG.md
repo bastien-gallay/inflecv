@@ -16,6 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `scripts/install.sh` one-shot installer (Typst, uv, just, Python deps, fonts).
 - CI minimal: install + tests + tidy-first commit-shape check.
 - John Doe example application bundle (sample CV + sample offer + sample fit report).
+- `scripts/job_analyze/` real implementation (was an empty stub):
+  parses a job posting, extracts must-haves / nice-to-haves / ATS
+  keywords / red flags, emits a Markdown analysis. 80+ unit tests.
+- `scripts/job_fit/` real implementation (was an empty stub):
+  scores fit on the 60/20/15/5 must-have / nice-to-have / experience
+  / culture formula, emits a Markdown fit report. 60+ unit tests.
 
 ### Changed
 
