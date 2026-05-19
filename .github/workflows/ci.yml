@@ -53,6 +53,16 @@ jobs:
         # justfile regressions. Output PDF is discarded — we only care
         # that the pipeline runs end-to-end on a clean checkout.
 
+  markdownlint:
+    name: markdownlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DavidAnson/markdownlint-cli2-action@v18
+        with:
+          globs: "**/*.md"
+
   tidy-first-check:
     name: tidy-first commit shape
     runs-on: ubuntu-latest
