@@ -53,6 +53,24 @@ jobs:
         # justfile regressions. Output PDF is discarded — we only care
         # that the pipeline runs end-to-end on a clean checkout.
 
+  fresh-clone-install:
+    name: fresh-clone install smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run installer end-to-end on a clean runner
+        # No pre-installed uv/Typst/just — the installer must bootstrap
+        # everything itself. This is the actual user experience for a
+        # fresh clone; install-and-test uses cached actions instead.
+        run: ./scripts/install.sh
+
+      - name: Build John Doe sample to prove the install works
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          just build
+
   markdownlint:
     name: markdownlint
     runs-on: ubuntu-latest
