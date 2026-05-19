@@ -47,6 +47,12 @@ jobs:
       - name: Run tests
         run: uv run pytest -q
 
+      - name: Compile John Doe sample CV (Typst smoke)
+        run: just build
+        # Catches: Typst syntax breakage in src/, missing fonts in CI,
+        # justfile regressions. Output PDF is discarded — we only care
+        # that the pipeline runs end-to-end on a clean checkout.
+
   tidy-first-check:
     name: tidy-first commit shape
     runs-on: ubuntu-latest
