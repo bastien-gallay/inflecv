@@ -71,7 +71,8 @@ achievements during consultant and CTO periods.
 
 ## 🏷️ Task References
 
-This project uses a task management system (see [TASKS.md](TASKS.md)). Tasks use IDs in the format `XXX-NNN` (e.g., `CNT-001`, `TPL-001`).
+This project uses a task management system (see [TASKS.md](TASKS.md)).
+Tasks use IDs in the format `XXX-NNN` (e.g., `CNT-001`, `TPL-001`).
 
 ### Referencing Tasks in Commits
 
